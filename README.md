@@ -6,7 +6,7 @@
 This repository contains the implementation of our paper
 [IntrinsicAvatar: Physically Based Inverse Rendering of Dynamic Humans from Monocular Videos via Explicit Ray Tracing](https://arxiv.org/abs/2312.05210).
 
-You can find detailed usage instructions for using pretrained models and training your own models below.
+You can find detailed usage instructions for installation, dataset preparation, training and testing below.
 
 If you find our code useful, please cite:
 
