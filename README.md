@@ -88,6 +88,7 @@ python launch.py mode=test \
 
 ## TODO
 - [ ] Blender script to render SyntheticHuman-relit from the SyntheticHuman dataset
+- [ ] Proper mesh export code
 - [ ] Unified dataset loader for PeopleSnapshot (monocular), RANA/SyntheticHuman (synthetic), and ZJU (multi-view)
 
 ## Acknowledgement
