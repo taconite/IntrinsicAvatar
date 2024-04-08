@@ -44,7 +44,7 @@ data
 
 ### Environment Setup
 - Create a Python virtual environment via either `venv` or `conda`
-- Install PyTorch>=1.13 [here](https://pytorch.org/get-started/locally/) based the package management tool you used and your cuda version (older PyTorch versions may work but have not been tested)
+- Install PyTorch>=1.13 [here](https://pytorch.org/get-started/locally/) based on the package management tool you are using and your cuda version (older PyTorch versions may work but have not been tested)
 - Install tiny-cuda-nn PyTorch extension: `pip install git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch`
 - Install other packages: `pip install -r requirements.txt`
 - Set `PYTHONPATH` to the current working directory: `export PYTHONPATH=${PWD}`
@@ -57,7 +57,7 @@ Please follow the steps in [DATASET.md](DATASET.md).
 ## Training
 Training and validation use [wandb](https://wandb.ai/site) for logging, which is free to use but requires online register. If you don't want to use it, append `logger.offline=true` to your command.
 
-To train on the `male-3-casual` sequence, use the following command:
+To train on the `male-3-casual` sequence of PeopleSnapshot, use the following command:
 ```
 python launch.py dataset=peoplesnapshot/male-3-casual tag=IA-male-3-casual
 ```
