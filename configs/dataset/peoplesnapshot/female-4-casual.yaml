@@ -14,7 +14,7 @@ opt:
     start: 0
     end: 335
     skip: 4
-    downscale: 2
+    downscale: 1
     sampler: ${sampler}
     fitting: false
     refine: false
@@ -24,11 +24,11 @@ opt:
     start: 335
     end: 335
     skip: 4
-    downscale: 2
+    downscale: 1
   test:
     num_workers: 0
     batch_size: 1
     start: 335
     end: 523
     skip: 4
-    downscale: 2
+    downscale: 1

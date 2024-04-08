@@ -71,7 +71,9 @@ python launch.py mode=test \
     resume=${PATH_TO_CKPT} \
     dataset=peoplesnapshot/male-3-casual \
     tag=IA-male-3-casual \
+    model.render_mode=light \
     model.global_illumination=false \
+    model.samples_per_pixel=1024 \
     model.add_emitter=true  # set to false if you are doing quantitative evaluation
 ```
 To test on the `male-3-casual` sequence for relighting on out-of-distribution poses, use the following command:
