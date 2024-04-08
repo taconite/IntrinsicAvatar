@@ -70,10 +70,13 @@ To test on the `male-3-casual` sequence for relighting on within-distribution po
 python launch.py mode=test \
     resume=${PATH_TO_CKPT} \
     dataset=peoplesnapshot/male-3-casual \
-    tag=IA-male-3-casual \
-    model.render_mode=light \
+    dataset.hdri_filepath=hdri_images/city.hdr \
+    light=envlight_tensor \
+    model.render_mode=light \ # light importance sampling
     model.global_illumination=false \
     model.samples_per_pixel=1024 \
+    model.resample_light=false \ # set to true if you are doing quantitative evaluation
+    tag=IA-male-3-casual \
     model.add_emitter=true  # set to false if you are doing quantitative evaluation
 ```
 To test on the `male-3-casual` sequence for relighting on out-of-distribution poses, use the following command:
@@ -81,13 +84,16 @@ To test on the `male-3-casual` sequence for relighting on out-of-distribution po
 python launch.py mode=test \
     resume=${PATH_TO_CKPT} \
     dataset=animation/male-3-casual \
+    dataset.hdri_filepath=hdri_images/city.hdr \
     light=envlight_tensor \
-    tag=IA-male-3-casual \
     model.render_mode=light \
     model.global_illumination=false \
     model.samples_per_pixel=1024 \
-    model.add_emitter=true  # set to false if you are doing quantitative evaluation
+    model.resample_light=false \
+    tag=IA-male-3-casual \
+    model.add_emitter=true
 ```
+NOTE: if you encounter the error `mismatched input '=' expecting <EOF>`, it is most likely because your checkpoint path contains `=` (which is the default checkpoint format of this repo). In such a case you can quote twice, e.g. use `'resume="${PATH_TO_CKPT}"'`. For details please check this Hydra [issue](https://github.com/facebookresearch/hydra/issues/1577).
 
 ## TODO
 - [ ] Blender script to render SyntheticHuman-relit from the SyntheticHuman dataset
