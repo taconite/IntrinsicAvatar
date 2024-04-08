@@ -1,6 +1,6 @@
 # Dataset Preparation
 ## Prerequisite
-For dataset preparation and preprocessing, we assume you already finished intallation steps in `README.md`. For data preprocessing, you also need to download [this .npy file](https://github.com/zju3dv/EasyMocap/blob/98a229f2ab7647f14ac9693eab00639337274b49/data/smplx/J_regressor_body25.npy) from the [EasyMocap Repository](https://github.com/zju3dv/EasyMocap), and put it under `body_models/misc/`
+For dataset preparation and preprocessing, we assume you already finished intallation steps in `README.md`. ~~For data preprocessing, you also need to download [this .npy file](https://github.com/zju3dv/EasyMocap/blob/98a229f2ab7647f14ac9693eab00639337274b49/data/smplx/J_regressor_body25.npy) from the [EasyMocap Repository](https://github.com/zju3dv/EasyMocap), and put it under `body_models/misc/`~~ this is not needed for PeopleSnapshot and RANA.
 
 ## PeopleSnapshot Dataset
 We use the preprocessing script from [InstantAvatar](https://github.com/tijiang13/InstantAvatar):
