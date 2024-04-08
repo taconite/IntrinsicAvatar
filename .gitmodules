@@ -1,0 +1,3 @@
+[submodule "lib/torch_pbr"]
+	path = lib/torch_pbr
+	url = https://github.com/taconite/torch_pbr.git

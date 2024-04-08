@@ -1,0 +1,32 @@
+name: non-rigid-deformer
+kick_in_step: 4000
+xyz_encoding_config:
+  # otype: ProgressiveBandHashGrid
+  # n_levels: 16
+  # n_features_per_level: 2
+  # log2_hashmap_size: 19
+  # base_resolution: 16
+  # per_level_scale: 1.447269237440378
+  #   # per_level_scale: 1.5
+  # interpolation: Linear
+  # include_xyz: true
+  # # start from start_step and start_level, increase feature level by 1 very update_steps steps
+  # start_level: 4
+  # update_steps: 500
+  # start_step: 2000
+  otype: VanillaFrequency
+  n_frequencies: 6
+  include_xyz: false
+  start_step: 4000
+  n_masking_step: 8000
+mlp_network_config:
+  otype: VanillaCondMLP
+  output_activation: none
+  n_neurons: 128
+  n_hidden_layers: 4
+  dim_cond: ${mul:${model.pose_encoder.num_joints}, ${model.pose_encoder.dim_per_joint}}
+  cond_in: [0]
+  skip_in: [2]
+  sphere_init: false
+  weight_norm: false
+  last_layer_zeros: true

@@ -1,0 +1,5 @@
+name: envlight-SG
+xyz2lonlat_mode: null # or blender
+envlight_config:
+  base_res: 256
+  num_SGs: 64

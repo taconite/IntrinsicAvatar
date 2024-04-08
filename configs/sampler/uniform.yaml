@@ -1,0 +1,2 @@
+_target_: utils.sampler.UniformSampler
+num_sample: 4096

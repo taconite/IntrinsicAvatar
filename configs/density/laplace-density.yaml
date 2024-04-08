@@ -1,0 +1,4 @@
+name: learned-laplace-density
+beta_schedule_steps: 10000
+params_init:
+  beta: 0.3

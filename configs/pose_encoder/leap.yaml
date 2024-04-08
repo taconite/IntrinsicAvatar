@@ -1,0 +1,5 @@
+name: leap
+num_joints: 24
+rel_joints: false
+dim_per_joint: 6
+out_dim: -1

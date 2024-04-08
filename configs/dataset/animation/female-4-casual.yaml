@@ -1,0 +1,29 @@
+train_split: 'train'
+val_split: 'val'
+test_split: 'test'
+name: animation
+dataroot_train: ./load/peoplesnapshot/${dataset.subject}/
+dataroot_test: ./load/animation/${dataset.motion}
+subject: female-4-casual
+motion: aist
+gender: female
+scene_aabb: [-1.25, -1.55, -1.25, 1.25, 0.95, 1.25]
+hdri_filepath: ./hdri_images/city.hdr  # https://polyhaven.com/a/portland_landing_pad
+opt:
+  train:
+    num_workers: 8
+    batch_size: 1
+    start: 0
+    end: 455
+    skip: 4
+    downscale: 1
+    fitting: false
+    refine: false
+  test:
+    num_workers: 0
+    batch_size: 1
+    start: 0
+    end: 101
+    skip: 1
+    downscale: 2
+    hdri_filepath: ./hdri_images/city.hdr

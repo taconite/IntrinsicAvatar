@@ -1,0 +1,32 @@
+name: snarf_deformer
+rigid_deformer:
+  name: fast-snarf
+  model_path: ./data/SMPLX/smpl
+  gender: ${dataset.gender}
+  deformer_config:
+    softmax_mode: hierarchical
+    resolution: 128
+    cano_pose: "A_pose"
+    precision: ${trainer.precision}
+    use_j_inv: false
+    optimize_betas: false
+non_rigid_deformer:
+  name: non-rigid-deformer
+  kick_in_step: 4000
+  xyz_encoding_config:
+    otype: VanillaFrequency
+    n_frequencies: 6
+    include_xyz: false
+    start_step: 4000
+    n_masking_step: 8000
+  mlp_network_config:
+    otype: VanillaCondMLP
+    output_activation: none
+    n_neurons: 256
+    n_hidden_layers: 5
+    dim_cond: ${mul:${model.pose_encoder.num_joints}, ${model.pose_encoder.dim_per_joint}}
+    cond_in: [0]
+    skip_in: [4]
+    sphere_init: false
+    weight_norm: false
+    last_layer_zeros: true

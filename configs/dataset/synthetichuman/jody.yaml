@@ -1,0 +1,33 @@
+train_split: 'train'
+val_split: 'val'
+test_split: 'test'
+name: synthetichuman
+dataroot: ./load/synthetichuman
+subject: jody
+gender: neutral
+scene_aabb: [-1.25, -1.55, -1.25, 1.25, 0.95, 1.25] # aabb for p1
+opt:
+  train:
+    num_workers: 8
+    batch_size: 1
+    start: 0
+    end: 99
+    skip: 1
+    downscale: 2
+    sampler: ${sampler}
+    fitting: false
+    refine: false
+  val:
+    num_workers: 0
+    batch_size: 1
+    start: 49
+    end: 49
+    skip: 1
+    downscale: 2
+  test:
+    num_workers: 0
+    batch_size: 1
+    start: 0
+    end: 99
+    skip: 1
+    downscale: 2

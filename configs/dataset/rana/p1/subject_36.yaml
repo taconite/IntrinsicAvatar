@@ -1,0 +1,33 @@
+train_split: 'train_p1'
+val_split: 'train_p1'
+test_split: 'train_p1'
+name: rana
+dataroot: ./load/rana
+subject: subject_36
+gender: male
+scene_aabb: [-1.25, -1.55, -1.25, 1.25, 0.95, 1.25] # aabb for p1
+opt:
+  train:
+    num_workers: 8
+    batch_size: 1
+    start: 0
+    end: 99
+    skip: 1
+    downscale: 4
+    sampler: ${sampler}
+    fitting: false
+    refine: false
+  val:
+    num_workers: 0
+    batch_size: 1
+    start: 99
+    end: 99
+    skip: 2
+    downscale: 4
+  test:
+    num_workers: 0
+    batch_size: 1
+    start: 0
+    end: 99
+    skip: 1
+    downscale: 4

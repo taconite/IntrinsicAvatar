@@ -1,0 +1,16 @@
+name: volume-material
+input_feature_dim: ${add:${model.geometry.feature_dim}, 35} # 35 is the feature dimension from the appearance hash grid
+n_output_dim: 5
+albedo_scale: 0.77
+albedo_bias: 0.03
+roughness_scale: 0.9
+roughness_bias: 0.09
+metallic_scale: 1.0
+metallic_bias: 0.0
+mlp_network_config:
+  otype: LipshitzMLP
+  activation: ReLU
+  output_activation: none
+  n_neurons: 64
+  n_hidden_layers: 2
+material_activation: sigmoid

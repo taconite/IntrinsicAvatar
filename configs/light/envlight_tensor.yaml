@@ -1,0 +1,7 @@
+name: envlight-tensor
+xyz2lonlat_mode: null # or blender
+envlight_config:
+  hdr_filepath: null
+  scale: 0.5
+  bias: 0.25
+  base_res: 256

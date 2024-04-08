@@ -1,0 +1,26 @@
+name: volume-ref-dir-radiance
+input_feature_dim: ${add:${model.geometry.feature_dim}, 3} # surface normal as additional input
+xyz_encoding_config:
+  otype: ProgressiveBandHashGrid
+  n_levels: 16
+  n_features_per_level: 2
+  log2_hashmap_size: 19
+  base_resolution: 16
+  per_level_scale: 1.447269237440378
+    # per_level_scale: 1.5
+  interpolation: Linear
+  include_xyz: true
+  # start from start_step and start_level, increase feature level by 1 very update_steps steps
+  start_level: 4
+  update_steps: 125
+  start_step: 500
+dir_encoding_config:
+  otype: SphericalHarmonics
+  degree: 4    
+mlp_network_config:
+  otype: VanillaMLP
+  activation: ReLU
+  output_activation: none
+  n_neurons: 64
+  n_hidden_layers: 2
+color_activation: sigmoid

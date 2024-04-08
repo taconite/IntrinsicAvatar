@@ -1,0 +1,4 @@
+name: pose_correction
+dataset_length: 100 # TODO: make this automatically inferred from dataset
+enable_pose_correction: false
+pose_correction_start_step: 4000

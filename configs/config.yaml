@@ -1,0 +1,177 @@
+defaults:
+  - _self_
+  - dataset: peoplesnapshot/male-3-casual
+  - sampler: edge
+  - geometry: progressive_hash_grid
+  - radiance: progressive_hash_grid
+  - material: shallow_mlp
+  - scatterer: brdf-multi-lobe
+  - light: envlight_SG
+  - deformer: snarf_deformer
+  - density: laplace-density
+  - pose_encoder: dummy
+  - pose_correction: pose_residual
+    # - non_rigid_deformer: dummy
+  - override hydra/hydra_logging: disabled
+  - override hydra/job_logging: disabled
+
+# Disable Hydra's automatic logging
+hydra:
+  output_subdir: null
+  run:
+    dir: .
+
+pose_correction_wd: 0.00001
+color_grid_wd: 0.0001
+
+name: intrinsic-avatar-${dataset.subject}
+tag: ''
+seed: 42
+gpu: '0'
+resume: null
+resume_weights_only: false
+mode: train
+exp_dir: exp
+log_dir: null
+save_dir: null 
+ckpt_dir: null 
+code_dir: null 
+config_dir: null
+runs_dir: runs
+verbose: false
+
+model:
+  name: intrinsic-avatar
+  global_illumination: true
+  render_mode: uniform_light
+  scene_aabb: ${dataset.scene_aabb}
+  samples_per_pixel: 512
+  num_samples_per_ray: 128
+  num_samples_per_secondary_ray: 64
+  secondary_shader_chunk: 160000
+  secondary_near_plane: 0.0
+  secondary_far_plane: 1.5
+  secondary_importance_sample: true
+  zero_crossing_search: true  # technique introduced in sec. 3.4
+  resample_light: true  # true for quantitative evaluation of relighting, false for generating animation
+  volume_scattering: true
+  add_emitter: false  # if true, merge emitter into predicted RGB image as the background
+  grid_prune: true
+  grid_prune_occ_thre: 0.001
+  grid_prune_ema_decay: 0.8
+  randomized: true  # stratified sampling on primary rays
+  ray_chunk: 4096
+    # cos_anneal_end: 1000
+  learned_background: false
+  learn_material: true
+  material_feature: hybrid
+  phys_kick_in_step: 10000
+  importance_sample_kick_in_step: 1000
+  background_color: random
+  density: ${density}
+  pose_encoder: ${pose_encoder}
+  geometry: ${geometry}
+  radiance: ${radiance}
+  material: ${material}
+  scatterer: ${scatterer}
+  light: ${light}
+  deformer: ${deformer}
+    # non_rigid_deformer: ${non_rigid_deformer}
+  pose_correction: ${pose_correction}
+
+system:
+  name: intrinsic-avatar-system
+  pbr_loss_only: false  # set to true for ablation
+  reinit_occupancy_grid_steps: [8000]
+  reinit_shape_every_n_steps: -1  # set to e.g. 2000 to reinitialize SMPL shape every 2000 steps, in case beta is optimized by `pose_correction`
+  loss:
+    lambda_rgb_l1: 1.
+    lambda_rgb_phys_l1: 0.2
+    lambda_mask_bce: 0.1
+    lambda_eikonal: 0.1
+    lambda_lipshitz_bound: [12500, 1.e-5, 1.e-5, 12501] # 1e-5 starting from 12.5k step
+    lambda_curvature: [1.5, 0.0, 12500] # 1.5 until 12.5k step
+    lambda_albedo_smoothness: 0.01
+    lambda_roughness_smoothness: 0.01
+    lambda_metallic_smoothness: 0.01
+    sparsity_scale: 1.
+    # The following losses are not used in the final version
+    lambda_rgb_mse: 0.0
+    lambda_rgb_phys_mse: 0.0
+    lambda_rgb_demodulated: 0.0
+    lambda_mask_mse: 0.0
+    lambda_sparsity: 0.
+    lambda_distortion: 0.
+    lambda_opaque: 0.
+    lambda_albedo: 0. # only > 0 when debugging on synthetic datasets
+    lambda_normal_orientation: 0.0
+    lambda_albedo_entropy: 0.0
+    lambda_energy_conservation: 0.0
+  optimizer:
+    name: Adam
+    args:
+      lr: 0.001
+      betas: [0.9, 0.99]
+      eps: 1.e-15
+    params:
+      pose_correction:
+          lr: 0.0001
+          weight_decay: ${pose_correction_wd}
+      pose_encoder:
+          lr: ${system.optimizer.args.lr}
+      deformer:
+          lr: ${system.optimizer.args.lr}
+      geometry:
+          lr: ${system.optimizer.args.lr}
+      radiance.network:
+          lr: ${system.optimizer.args.lr}
+      radiance.xyz_encoding:
+          lr: ${system.optimizer.args.lr}
+          weight_decay: ${color_grid_wd}
+      density:
+          lr: 0.001
+      material:
+          lr: ${system.optimizer.args.lr}
+      emitter:
+          lr: ${system.optimizer.args.lr}
+  warmup_steps: 1000
+  scheduler:
+    name: SequentialLR
+    interval: step
+    milestones:
+      - ${system.warmup_steps}
+    schedulers:
+      - name: LinearLR # linear warm-up in the first system.warmup_steps steps
+        args:
+          start_factor: 0.01
+          end_factor: 1.0
+          total_iters: ${system.warmup_steps}
+      - name: MultiStepLR
+        args:
+          milestones: [12500, 18750, 22500, 23750]
+          gamma: 0.3
+
+checkpoint:
+  save_top_k: -1
+  every_n_train_steps: ${trainer.max_steps}
+
+export:
+  chunk_size: 2097152
+  export_vertex_color: False 
+
+trainer:
+  max_steps: 25000
+  log_every_n_steps: 100
+  num_sanity_val_steps: 0
+  val_check_interval: 2000
+  check_val_every_n_epoch: null
+  limit_train_batches: 1.0
+  limit_val_batches: 2
+  enable_progress_bar: true 
+  precision: 32
+
+logger:
+  project: intrinsic-avatar
+  entity: null
+  id: null
+  offline: false

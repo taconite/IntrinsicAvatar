@@ -1,0 +1,34 @@
+train_split: 'train'
+val_split: 'val'
+test_split: 'test'
+name: peoplesnapshot
+dataroot: ./load/peoplesnapshot/${dataset.subject}/
+subject: male-4-casual
+gender: male
+scene_aabb: [-1.25, -1.55, -1.25, 1.25, 0.95, 1.25]
+hdri_filepath: null
+opt:
+  train:
+    num_workers: 8
+    batch_size: 1
+    start: 0
+    end: 659
+    skip: 6
+    downscale: 2
+    sampler: ${sampler}
+    fitting: false
+    refine: false
+  val:
+    num_workers: 0
+    batch_size: 1
+    start: 660
+    end: 660
+    skip: 6
+    downscale: 2
+  test:
+    num_workers: 0
+    batch_size: 1
+    start: 660
+    end: 872
+    skip: 6
+    downscale: 2
